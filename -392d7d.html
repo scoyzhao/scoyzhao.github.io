@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>回溯算法&nbsp;|&nbsp;Zhao’s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="回溯算法">
+  
+    <meta name="description" content="整理全部回溯算法的知识点">
+    <meta property="og:description" content="整理全部回溯算法的知识点">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😃&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😃&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">回溯算法</h1>
+    
+      <div class="DateTagBar">
+        
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Thu, Nov 17, 2022</span>
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--yellow">
+            <a href="tag/JavaScript.html">JavaScript</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--pink">
+            <a href="tag/算法.html">算法</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/392d7da9f087468eaa7af120a008dcda" class="PageRoot PageRoot--FullWidth"><div id="https://www.notion.so/34e3dc4167df44a1a0222e5423c219d3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">回溯算法是一种暴力的搜索方式，一般用单词 backtracking 表示。它是为了模拟未知的for循环次数，是递归的副产品。</span></span></p></div><div id="https://www.notion.so/4f8b181c923a426eaa3276df235536f3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">它的本质是穷举，穷举所有可能，然后选出想要的答案。</span></span></p></div><ul id="https://www.notion.so/6a681e7139574bb6bdb869355058af4c" class="ColorfulBlock ColorfulBlock--ColorGray TableOfContents"><li class="TableOfContents__Item"><a href="#https://www.notion.so/cb51c75cc6144943ab9424563c71ebeb"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">理论</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/b3c5756b1a574d63bb457c893989c8fb"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">回溯法解决的问题</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/30701392125c487db2517f26d1698218"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">理解</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/f0c303702d944fdebc9f77ea1fd9394e"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">组合问题</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/03bb9decd2ae49ccb4c580c6a7bc7ef9"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">题目概述与一般解答</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/1c8684040bb94d63aea05acf1d370e8f"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">剪枝</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/206b52e8bf18410eadcad0b66abb4b80"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">分割问题</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/ede7673ebdc64eb0a05c2d404a519aa8"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">子集问题</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/abe54b2ca8164477b7ba387f881b1242"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">排列问题</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/68a9dc18379b4d779d8762cbe3d1233a"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">棋盘问题</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/fc2585def2a546f9877920a46258fd87"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">其他问题</span></span></div></a></li></ul><h2 id="https://www.notion.so/cb51c75cc6144943ab9424563c71ebeb" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/cb51c75cc6144943ab9424563c71ebeb"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">理论</span></span></h2><h3 id="https://www.notion.so/b3c5756b1a574d63bb457c893989c8fb" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/b3c5756b1a574d63bb457c893989c8fb"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">回溯法解决的问题</span></span></h3><ul class="BulletedListWrapper"><li id="https://www.notion.so/978f9a108c08463e96c31eec2c57e476" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">组合问题：N个数里面按一定规则找出k个数的集合</span></span></li><li id="https://www.notion.so/3b2623e7cdd84ac3afb2a3fb6ef5832f" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">切割问题：一个字符串按一定规则有几种切割方式</span></span></li><li id="https://www.notion.so/af2e51c8077d4869aff43af315a718b5" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">子集问题：一个N个数的集合里有多少符合条件的子集</span></span></li><li id="https://www.notion.so/e3560479834d427a8d916e7df2480a76" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">排列问题：N个数按一定规则全排列，有几种排列方式</span></span></li><li id="https://www.notion.so/60344152764a4284b826b89051de01cf" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">棋盘问题：N皇后，解数独等等</span></span></li></ul><div id="https://www.notion.so/d15d705bffd34b0aa48b49baf1a9f879" class="ColorfulBlock ColorfulBlock--BgGray Callout"><div class="Callout__Icon"><div class="Icon">💡</div></div><p class="Callout__Content"><span class="SemanticStringArray"><span class="SemanticString">组合与排列：组合无顺序概念的，排列是需要顺序的。例如 [1, 2]与[2, 1]是同一个组合，但是是两个排列</span></span></p></div><h3 id="https://www.notion.so/30701392125c487db2517f26d1698218" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/30701392125c487db2517f26d1698218"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">理解</span></span></h3><div id="https://www.notion.so/0a8e62029b4d4f3d9c6f1a0f536d0b4e" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F14720ace-1e0d-484d-841b-79dd166d0dea%2FUntitled.png?width=1558&amp;table=block&amp;id=0a8e6202-9b4d-4f3d-9c6f-1a0f536d0b4e"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F14720ace-1e0d-484d-841b-79dd166d0dea%2FUntitled.png?width=1558&amp;table=block&amp;id=0a8e6202-9b4d-4f3d-9c6f-1a0f536d0b4e" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/731996e660a74132a721631fe71e334a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">所有的回溯问题，都可以抽象成树形结构，因为回溯都是在集合里，递归找子集</span></span></p></div><div id="https://www.notion.so/5fe93ee5bde2456d9fd406ff899322e0" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">集合的大小构成了树的宽度，递归的深度也构成了树的深度</span></span></p></div><div id="https://www.notion.so/8ce5c6f872fa47aca79fdb2c648f4ff6" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">递归就一定需要终止条件，所以这个树高度一定是有限制的</span></span></p></div><pre id="https://www.notion.so/86ecd33ccfdb482b84a61b374bbdc513" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">void</span> <span class="token function">backtracking</span><span class="token punctuation">(</span><span class="token parameter">参数</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>终止条件<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        存放结果<span class="token punctuation">;</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>选择：本层集合中元素（树中节点孩子的数量就是集合的大小）<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        处理节点<span class="token punctuation">;</span>
+        <span class="token function">backtracking</span><span class="token punctuation">(</span>路径，选择列表<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 递归</span>
+        回溯，撤销处理结果
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></span></span></span></code></pre><div id="https://www.notion.so/d77cc521f79d4eeab7e7babf346730c7" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">一般来说，回溯是没有返回值的，但是如果用回溯找唯一解，或者是最优解，那么就会需要一个返回值，这样当找到这个解的时候，再继续算法其实就可以直接跳过了，这个在后面有描述</span></span></p></div><div id="https://www.notion.so/6d6a24b31f5145b7bce2b250fbb3250c" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">对于回溯问题，一般需要考虑三个方面：</span></span></p></div><ol class="NumberedListWrapper"><li id="https://www.notion.so/a36ea7fe8a214e6c8775494127c3d88d" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">回溯返回值和参数</span></span></li><li id="https://www.notion.so/5e26d7ea7a09462e8ed64eda0f701f25" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">终止条件</span></span></li><li id="https://www.notion.so/0558c0bfac6d44c29748309bea708610" class="NumberedList" value="3"><span class="SemanticStringArray"><span class="SemanticString">单层如何搜索</span></span></li></ol><h2 id="https://www.notion.so/f0c303702d944fdebc9f77ea1fd9394e" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/f0c303702d944fdebc9f77ea1fd9394e"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">组合问题</span></span></h2><h3 id="https://www.notion.so/03bb9decd2ae49ccb4c580c6a7bc7ef9" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/03bb9decd2ae49ccb4c580c6a7bc7ef9"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">题目概述与一般解答</span></span></h3><div id="https://www.notion.so/274b09986b15475cb5201622b2b27877" class="ColorfulBlock ColorfulBlock--BgGray Callout"><div class="Callout__Icon"><div class="Icon">💡</div></div><p class="Callout__Content"><span class="SemanticStringArray"><span class="SemanticString">这类型题目，一般要求从给定的子集中寻找组合数，例如从 n 个数的子集中，寻找任意 k 个数的组合数，或者这 k 个组合可以做什么事情。其中每个数字只能用一次</span></span></p></div><div id="https://www.notion.so/303fac4e3a0b46d4944e659b07617304" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">按照上述思路，分析三个方面：</span></span></p></div><ol class="NumberedListWrapper"><li id="https://www.notion.so/c94fb83f7e864d32a3d9922db63632b8" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">返回值与参数：题目要求寻找全部组合，那么就不要返回值，把过程进行到底就可以了。参数需要知道当前存放状态的一个结果，一般来说是数组。因为是组合，所以不需要考虑顺序，但是需要考虑用过的不能再用，所以需要知道当前操作从哪里开始</span></span></li><li id="https://www.notion.so/ad3bfd7fc4ed489e99bd92f4e76af795" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">终止条件：根据题目来，如果是做什么事情比如和是多少，那么就输出他，如果是多少个值，那么就判断结果长度</span></span></li><li id="https://www.notion.so/ed2ead64b8fc466d94e04ccf4e2fef18" class="NumberedList" value="3"><span class="SemanticStringArray"><span class="SemanticString">单层如何搜索：从起始位置开始，加入下一个元素，然后递归。递归结束之后，需要回溯。</span></span></li></ol><div id="https://www.notion.so/1fa290aaab9240bb9d69606a870db62d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div><div id="https://www.notion.so/339b53149bc742d8989d16c6c7cd5012" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">这样直接写比较抽象。以几个题目为例，写一下具体代码理解下过程：</span></span></p></div><div id="https://www.notion.so/2dd66a2ecd9d4ab6b01298b936f09cf4" class="ColorfulBlock ColorfulBlock--BgGray Callout"><div class="Callout__Icon"><div class="Icon">💡</div></div><p class="Callout__Content"><span class="SemanticStringArray"><span class="SemanticString">找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数，并且每种组合中不存在重复的数字。</span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://leetcode.cn/problems/combination-sum-iii/submissions/">https://leetcode.cn/problems/combination-sum-iii/submissions/</a></span></span></p></div><div id="https://www.notion.so/9158bbdabe324f839a4c3aeedfec6460" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F1340565b-2732-44a5-9e74-345cda66c863%2FUntitled.png?width=2026&amp;table=block&amp;id=9158bbda-be32-4f83-9a4c-3aeedfec6460"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F1340565b-2732-44a5-9e74-345cda66c863%2FUntitled.png?width=2026&amp;table=block&amp;id=9158bbda-be32-4f83-9a4c-3aeedfec6460" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/be63c8a6f201441b85c7c6c2d1c4dc6d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">可以根据题目画出上面的图</span></span></p></div><pre id="https://www.notion.so/c0893d5b48c7407cbdd2c83e6e418cda" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">var</span> <span class="token function-variable function">combinationSum3</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">k<span class="token punctuation">,</span> n</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> res <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+		<span class="token comment">/**
+			idx 为起始位置，判断从哪里开始
+			target 当前都目标，因为需要求值，这个数可以通过path遍历计算得知，但是比较麻烦，每次都需要遍历，所以在这里写粗来，注意回溯的时候要一并处理
+			path 当前解
+		*/</span>
+    <span class="token keyword">const</span> <span class="token function-variable function">dfs</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">idx<span class="token punctuation">,</span> target<span class="token punctuation">,</span> path</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>path<span class="token punctuation">.</span>length <span class="token operator">==</span> k<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// 当路径长度与结果相符</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>target <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                res<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token operator">...</span>path<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> 
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> idx<span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> n<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            path<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            target <span class="token operator">-=</span> i <span class="token comment">// 计算下一个目标</span>
+            <span class="token function">dfs</span><span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> target<span class="token punctuation">,</span> path<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 递归</span>
+						path<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// 递归结束，回溯</span>
+            target <span class="token operator">+=</span> i <span class="token comment">// 注意处理</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">dfs</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> n<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> res
+<span class="token punctuation">}</span><span class="token punctuation">;</span></span></span></span></code></pre><div id="https://www.notion.so/a6f27e7605f243238427db2b94e31fc5" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">这样，按照上述思路就把代码写粗来了，但是就会出现另一个问题，如果数值过大，就会超时。上述思路是对的，但是有些没必要的过程，就需要进行剪纸操作</span></span></p></div><h3 id="https://www.notion.so/1c8684040bb94d63aea05acf1d370e8f" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/1c8684040bb94d63aea05acf1d370e8f"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">剪枝</span></span></h3><h2 id="https://www.notion.so/206b52e8bf18410eadcad0b66abb4b80" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/206b52e8bf18410eadcad0b66abb4b80"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">分割问题</span></span></h2><h2 id="https://www.notion.so/ede7673ebdc64eb0a05c2d404a519aa8" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/ede7673ebdc64eb0a05c2d404a519aa8"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">子集问题</span></span></h2><h2 id="https://www.notion.so/abe54b2ca8164477b7ba387f881b1242" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/abe54b2ca8164477b7ba387f881b1242"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">排列问题</span></span></h2><h2 id="https://www.notion.so/68a9dc18379b4d779d8762cbe3d1233a" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/68a9dc18379b4d779d8762cbe3d1233a"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">棋盘问题</span></span></h2><h2 id="https://www.notion.so/fc2585def2a546f9877920a46258fd87" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/fc2585def2a546f9877920a46258fd87"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">其他问题</span></span></h2><div id="https://www.notion.so/2bb09cec029a4dafb4583d2289d405a5" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Zhao’s Blog 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
