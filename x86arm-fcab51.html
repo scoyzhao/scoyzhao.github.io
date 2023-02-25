@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>x86与ARM&nbsp;|&nbsp;Zhao’s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="x86与ARM">
+  
+    <meta name="description" content="关于架构的一些大白话">
+    <meta property="og:description" content="关于架构的一些大白话">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😃&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😃&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">x86与ARM</h1>
+    
+      <div class="DateTagBar">
+        
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Sat, Nov 19, 2022</span>
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--gray">
+            <a href="tag/other.html">other</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--brown">
+            <a href="tag/知识扩展.html">知识扩展</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/fcab5162c14a46ed945b38feb5706921" class="PageRoot PageRoot--FullWidth"><div id="https://www.notion.so/b504cc428c7c480a9493aec9fcf6c353" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">大白话记录下x86和ARM相关的历史与常识</span></span></p></div><ul id="https://www.notion.so/f6c0faa2954b46c181fe69b05f1e05e6" class="ColorfulBlock ColorfulBlock--ColorGray TableOfContents"><li class="TableOfContents__Item"><a href="#https://www.notion.so/07c0e908b75545c19c2efa30e6fd274a"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">指令集</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/2590938b04234c8aa526af72082a3eb5"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">精简指令集与复杂指令集</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/3f7a4acbeb0d4417b410fede397b871a"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">x86</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/669083c8600e488d97d023d93ee7f268"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">ARM</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/f1f62b261b704ad382c59e7a2536a62b"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">发展比较</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/2379f705b4074cc6be1303c320ea2257"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">制程工艺</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/a6f60403a68a4e73af1f39b5f49cfb5a"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">“复杂”</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/4585e0ba231b44c8b4cfdf4d6b07113d"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">“护城河”</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/33ff0932fe284304b267204b3d8a6c96"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">未来</span></span></div></a></li></ul><h1 id="https://www.notion.so/07c0e908b75545c19c2efa30e6fd274a" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/07c0e908b75545c19c2efa30e6fd274a"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">指令集</span></span></h1><div id="https://www.notion.so/f3c4dcf534a9482694490f35495d9654" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">指令集就是软件和硬件之间的纽带、规范、一套规则。比如说加减乘除怎么写。如果没用指令集，同一个软件在不同的硬件之间就得重新写。有了指令集，软件就不需要关心硬件是什么，只要按照一定的方法写就行了，这样就实现了软硬件分离。</span></span></p></div><div id="https://www.notion.so/016e4026a9c34d0d9623169aef68e264" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">指令集分为</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">复杂指令集</strong></span><span class="SemanticString">和</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">精简指令集</strong></span></span></p></div><h2 id="https://www.notion.so/2590938b04234c8aa526af72082a3eb5" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/2590938b04234c8aa526af72082a3eb5"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">精简指令集与复杂指令集</span></span></h2><div id="https://www.notion.so/bff45c218b4745a693689e60bb365273" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">精简的较短，只有基本功能，更灵活，功耗低</span></span></p></div><div id="https://www.notion.so/59c92a936e5346d7b697c49e98d8dd4a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">复杂的有块的概念，写起来更简单，用的步骤更少，功耗高</span></span></p></div><div id="https://www.notion.so/e4381d852be74cc588b1b4d7ceb5dfa4" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">而写的拼软件步骤要写在内存里，所以刚开始复杂的更省钱，因为步骤少</span></span></p></div><div id="https://www.notion.so/b0c20e14328e4fd48f9937606947ad6d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div><div id="https://www.notion.so/07d0cb89e5c340f882fa82206ccd9317" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">ARM的思路是，把最基本的逻辑提供，剩余的交给你的逻辑和算法，更加灵活</span></span></p></div><div id="https://www.notion.so/82cf6c4b873d42f8b209e8448779f038" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">x86呢，会把很多算法写在里面</span></span></p></div><div id="https://www.notion.so/a4e366b6a4d347beb8e0e2c5efd66b3d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如果有更好的算法被发现，那么精简集更好升级，硬件上也不会有什么特别大的难度，x86就比较难了。</span></span></p></div><h2 id="https://www.notion.so/3f7a4acbeb0d4417b410fede397b871a" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/3f7a4acbeb0d4417b410fede397b871a"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">x86</span></span></h2><div id="https://www.notion.so/7e38986eac9148dfb98204c6a5a796ad" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">IBM 5150电脑的处理器选择了Intel 8088，也就是8086的阉割版（8086价格更贵）。5150成功带动了个人电脑市场的发展，为了保证兼容性，之后的处理器也保持了统一套指令集架构，之后的命名也回归了原先的命名方式：8086。这个延续至今的架构也被叫做x86架构。（复杂指令集）</span></span></p></div><div id="https://www.notion.so/e5b7482abdd44a61980a420905dee0e1" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F315ca57c-3254-47a7-9fc9-d9bf5c277b9d%2FUntitled.png?width=2532&amp;table=block&amp;id=e5b7482a-bdd4-4a61-980a-420905dee0e1"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F315ca57c-3254-47a7-9fc9-d9bf5c277b9d%2FUntitled.png?width=2532&amp;table=block&amp;id=e5b7482a-bdd4-4a61-980a-420905dee0e1" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/ffdbfaafaab440b8b5ebd16162c8c177" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如果有了指令集，硬件通用化。装硬件就比较简单了。于是ibm打压处理器厂商。装机难度降低之后，处理器就成了技术含量最高的了，就有可能成为老大哥，把自己顶了。</span></span></p></div><div id="https://www.notion.so/e8236d745c354ebea0d06071c6a62df4" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F1973fc89-c443-4ec6-a913-80896156cc6e%2FUntitled.png?width=2546&amp;table=block&amp;id=e8236d74-5c35-4ebe-a0d0-6071c6a62df4"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F1973fc89-c443-4ec6-a913-80896156cc6e%2FUntitled.png?width=2546&amp;table=block&amp;id=e8236d74-5c35-4ebe-a0d0-6071c6a62df4" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/d49059cc995a47eebe149d3e9694e37e" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">于是IBM要求intel把x86指令集授权给其他厂商，其中就包括AMD。最终养了两个大哥，IBM不仅没成为小老弟，直接没了。</span></span></p></div><div id="https://www.notion.so/b2a037bc97224cf193e9267cffaa9d20" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">正是由于两个老大哥竞争，才使其他架构来的时候没有直接被打垮。也就是ARM指令集架构</span></span></p></div><div id="https://www.notion.so/62c9054c96424ed398b39b3fc11c6319" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Wintel 联盟把 x86 弄起飞了</span></span></p></div><h2 id="https://www.notion.so/669083c8600e488d97d023d93ee7f268" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/669083c8600e488d97d023d93ee7f268"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">ARM</span></span></h2><div id="https://www.notion.so/1b4841db8bf4449cada30eb40b925285" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">精简指令集</span></span></p></div><h1 id="https://www.notion.so/f1f62b261b704ad382c59e7a2536a62b" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/f1f62b261b704ad382c59e7a2536a62b"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">发展比较</span></span></h1><div id="https://www.notion.so/acda17c0bd3c414cafd05884db5fbc75" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">精简指令集的流水线机制，复杂指令集没法这么玩，但是复杂的步骤少。所以二者性能不好说谁快。</span></span></p></div><div id="https://www.notion.so/f615463e3fe8483ea6267e615e36ed2f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">一路以来x86起飞，主要是 windows和众多工程软件都是基于这个架构，主要是由于历史因素。</span></span></p></div><div id="https://www.notion.so/2a31edc2cef34a62a0e1a801e38ad516" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">但是x86还是有他的隐患，也就是‘复杂’。精简指令集，最近十几年才拿到最新的 </span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">制程工艺</strong></span><span class="SemanticString">。</span></span></p></div><h3 id="https://www.notion.so/2379f705b4074cc6be1303c320ea2257" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/2379f705b4074cc6be1303c320ea2257"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">制程工艺</span></span></h3><div id="https://www.notion.so/95e939b4d67f48009fbfda607888d4a4" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd0260413-eece-4fb8-8957-c9cc7da36988%2FUntitled.png?width=2424&amp;table=block&amp;id=95e939b4-d67f-4800-9fbf-da607888d4a4"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd0260413-eece-4fb8-8957-c9cc7da36988%2FUntitled.png?width=2424&amp;table=block&amp;id=95e939b4-d67f-4800-9fbf-da607888d4a4" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/f373bc54f39b43d3b87aafd1fb1b9992" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">intel拒绝给苹果手机提供芯片，给了精简指令集发展的机会。这时候内存已经便宜了，编译器也成熟了。x86的历史优势，智能手机也用不上。但是有一点，也就是最先进的制程工艺在x86也就是intel那边。</span></span></p></div><div id="https://www.notion.so/5f218b135abd43ed877fb9dd2b416d87" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd7769d9c-f6ca-450b-bba9-ba17b183b20a%2FUntitled.png?width=2662&amp;table=block&amp;id=5f218b13-5abd-43ed-877f-b9dd2b416d87"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd7769d9c-f6ca-450b-bba9-ba17b183b20a%2FUntitled.png?width=2662&amp;table=block&amp;id=5f218b13-5abd-43ed-877f-b9dd2b416d87" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/3890930a29214dec8097665a066075b3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">近年来ARM大战x86，其实制程工艺也很重要，当然还有操作系统。 </span></span></p></div><div id="https://www.notion.so/68dd9432bc5042528e829cc3297bda2e" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">iphone最终选择了ARM架构。最后大家都选用了ARM架构→供应ARM芯片的台积电也在充分的条件支持下，迅速发展，质变就发生了。2017年左右出现了ARM追平x86性能的声音出现了。</span></span></p></div><h3 id="https://www.notion.so/a6f60403a68a4e73af1f39b5f49cfb5a" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/a6f60403a68a4e73af1f39b5f49cfb5a"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">“复杂”</span></span></h3><div id="https://www.notion.so/2c14a32cb5824c5daeb9ece9295eb9ca" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">x86处理器能高效的执行复杂指令，离不开不ARM结构复杂的硬件结构。但是制程工艺逼近理论界限的时候，这个复杂就会把结构的复杂提高好几倍。</span></span></p></div><div id="https://www.notion.so/b3d42fe3359345cb837f594260cfa0a1" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">x86制程提升难度比ARM难太多了。这并不意味着ARM架构的电脑能在个人电脑乱杀了。x86的“护城河”就是之前的历史优势</span></span></p></div><h3 id="https://www.notion.so/4585e0ba231b44c8b4cfdf4d6b07113d" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/4585e0ba231b44c8b4cfdf4d6b07113d"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">“护城河”</span></span></h3><div id="https://www.notion.so/6995afc1f581496ba227d6d7f23f411a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">微软苹果等大公司都在做ARM的个人PC了。但是特别是微软都不太行，因为“护城河”很深。</span></span></p></div><div id="https://www.notion.so/d29aa68f0ef64260810d556961e74f02" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">现在的一些方法是转译，把复杂的都转移过来，但是会损失性能。→ apple 做了rosic转译 → m芯片。</span></span></p></div><div id="https://www.notion.so/57937f4c1faa41a6bc99e8e28eee5db6" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">随着m1芯片越来越畅销，很多软件也开始开发基于ARM架构的软件。</span></span></p></div><h3 id="https://www.notion.so/33ff0932fe284304b267204b3d8a6c96" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/33ff0932fe284304b267204b3d8a6c96"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">未来</span></span></h3><div id="https://www.notion.so/069e361b7ffa409092f9826d86e3ddf3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">二者在PC的大战，可以说还没有开打。苹果在用intel芯片的时候，也没能攻陷“护城河”。</span></span></p></div><div id="https://www.notion.so/e3058578eaee44a08ff9e602cd820024" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">或许能填上，或许不行。x86专业软件迁移到ARM可能永远不行。</span></span></p></div><div id="https://www.notion.so/3041b439a3d84e8b9568407959149df6" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">那么，面对来势汹汹的ARM，x86能不能翻过来干翻ARM呢？更有可能。AMD用台积电的制程工艺，以及intel在制程上的突破，再加上微软在系统层面上限制功耗，x86续航也会提高，也不是不可能。</span></span></p></div><div id="https://www.notion.so/e62ea2f5037f44faa53044475818f570" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Zhao’s Blog 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
