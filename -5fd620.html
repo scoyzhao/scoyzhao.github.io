@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>原型与委托&nbsp;|&nbsp;Zhao’s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="原型与委托">
+  
+    <meta name="description" content="JavaScript中的原型链与委托">
+    <meta property="og:description" content="JavaScript中的原型链与委托">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">原型与委托</h1>
+    
+      <div class="DateTagBar">
+        
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Sun, Feb 26, 2023</span>
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--yellow">
+            <a href="tag/JavaScript.html">JavaScript</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--blue">
+            <a href="tag/最后一次整理.html">最后一次整理</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/5fd6209ca3b34013b5fd4cdbed21a612" class="PageRoot PageRoot--FullWidth"><ul id="https://www.notion.so/bfcb55fec4a7495b84c008d5aab5fd41" class="ColorfulBlock ColorfulBlock--ColorGray TableOfContents"><li class="TableOfContents__Item"><a href="#https://www.notion.so/d54e1c3684ad4cd999b9743e08928f3e"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">[[Prototype]]</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/da039a1243fe43198f7f0417b90fbcd2"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">Object.prototype</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/43d0dd33a43949f690b60668fa5f9756"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">“类”</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/24613fb6a0454fe7b17416fcbe3b15c3"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">构造函数</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/8832c15bebc341359655c819483ef1f3"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">构造函数还是调用</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/5d56845633f449c8a07cb672061cd1dc"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">委托</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/8b23f5a82fd04aa9a1106672203dd496"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">原型继承</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/f9bee63b4531450f82df5e3b5f70724a"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">Object.create</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/a28a3e4243b249a3a6411ca82254bdf3"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">polyfill代码</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/747c9663c9c4458a9655d057bfcf25da"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">安全对象</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/e3b9f677390349c590ef8b1e624896b6"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">委托的代码风格</span></span></div></a></li></ul><h1 id="https://www.notion.so/d54e1c3684ad4cd999b9743e08928f3e" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/d54e1c3684ad4cd999b9743e08928f3e"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">[[Prototype]]</span></span></h1><div id="https://www.notion.so/44310986543f412d907927b750f2bc2b" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">JavaScript对象中有一个特殊的内置对象，其实就是对于其他对象的引用。</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">几乎</code></span><span class="SemanticString">所有的对象在创建的时候，它就会赋予一个非空的值</span></span></p></div><div id="https://www.notion.so/b647108b3b1c41a0880142188864d89d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">对象属性的查找和for…in遍历蕾丝，都会顺着它</span></span></p></div><h2 id="https://www.notion.so/da039a1243fe43198f7f0417b90fbcd2" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/da039a1243fe43198f7f0417b90fbcd2"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Object.prototype</span></span></h2><div id="https://www.notion.so/e3eb5eab09804208ad8d530254c80040" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">那么尽头是啥呢？所有</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">普通</code></span><span class="SemanticString">的原型对象最终都会指向Object.prototype</span></span></p></div><h1 id="https://www.notion.so/43d0dd33a43949f690b60668fa5f9756" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/43d0dd33a43949f690b60668fa5f9756"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">“类”</span></span></h1><div id="https://www.notion.so/c8b4253f2db74978bdbd21e76e9719fc" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">在JavaScript中并没有类，但是用原型链模仿了类的行为，方法就是通过new操作符：</span></span></p></div><div id="https://www.notion.so/72b94e8079084427b0be42b28f31dfa3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">回顾一下new做了哪些操作：</span></span></p></div><div id="https://www.notion.so/a513e51ac4d74889bb67ed6cb7498381" class="ColorfulBlock ColorfulBlock--BgGray Callout"><div class="Callout__Icon"><div class="Icon">💡</div></div><p class="Callout__Content"><span class="SemanticStringArray"><span class="SemanticString">new：</span></span><ol class="NumberedListWrapper"><li id="https://www.notion.so/5e38257ec00a408facca25706df39bec" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString">创建一个全新的对象</span></span></li><li id="https://www.notion.so/5fe1f24c657c48179867cf8d7f5e7624" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">这个对象的会被执行原型链的链接（a.__proto__ → A.prototype）</span></span></li><li id="https://www.notion.so/0830e4ccbdbc4f73badb9bdb26281a39" class="NumberedList" value="3"><span class="SemanticStringArray"><span class="SemanticString">这个对象会绑定到函数调用的this</span></span></li><li id="https://www.notion.so/13256e990505415c81cb29ace7f65d9e" class="NumberedList" value="4"><span class="SemanticStringArray"><span class="SemanticString">如果函数没有返回其他对象(如果有就返回这个对象)，那么就自动返回这个对象</span></span></li></ol></p></div><div id="https://www.notion.so/41869e51159c42bcb7bf071ddd89761f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">可以看到，第二步创建了这种“关联”</span></span></p></div><div id="https://www.notion.so/d9787f9d539f44eca1e6945175a77ba2" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">其中，</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">prototype</code></span><span class="SemanticString">属性是所有函数都默认拥有的属性，它共有且不可枚举</span></span></p></div><h2 id="https://www.notion.so/24613fb6a0454fe7b17416fcbe3b15c3" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/24613fb6a0454fe7b17416fcbe3b15c3"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">构造函数</span></span></h2><div id="https://www.notion.so/6a9ba836f94a4a4085d4e3905b135746" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">使用new就是一种典型的原型继承。那么为什么让我们认为何种方式是一个类呢？</span></span></p></div><div id="https://www.notion.so/c0e1192f0b94483c9ad94cf847f992b0" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">因为new关键字，另外一个就是prototype属性：</span></span></p></div><pre id="https://www.notion.so/1568328536d1484d8c9f323998d3b65f" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">function</span> <span class="token function">Foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token class-name">Foo</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>constructor <span class="token operator">===</span> Foo <span class="token comment">// true</span>
+
+<span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+a<span class="token punctuation">.</span>constructor <span class="token operator">===</span> Foo <span class="token comment">// true</span></span></span></span></code></pre><div id="https://www.notion.so/d298efac63b44a87bec600ba1ffaf364" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Foo的prototype有一个constructor属性指向自己。而a也有一个constructor指向创建他的函数？</span></span></p></div><h3 id="https://www.notion.so/8832c15bebc341359655c819483ef1f3" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/8832c15bebc341359655c819483ef1f3"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">构造函数还是调用</span></span></h3><div id="https://www.notion.so/816e941226ba4565aac4993c33a9b330" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">new会劫持普通函数，并用</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">构造对象的形式</code></span><span class="SemanticString">调用他</span></span></p></div><div id="https://www.notion.so/f6c5234f8fbc401f8ccbdf14093a982f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">函数不是构造函数，而是当new调用的时候，函数会变成“构造函数调用”</span></span></p></div><h3 id="https://www.notion.so/5d56845633f449c8a07cb672061cd1dc" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/5d56845633f449c8a07cb672061cd1dc"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">委托</span></span></h3><div id="https://www.notion.so/649e7b89bab6440c98fee3efd89faca3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">实际上，上面例子的中，a的constructor引用委托给了Foo.prototype</span></span></p></div><div id="https://www.notion.so/bb36c3d399eb49d495d2b7c152b689a3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">所有的对象都有一个内部proto的属性，它指向“构造”他的对象的prototype属性，原型链正是基于这个原理</span></span></p></div><h2 id="https://www.notion.so/8b23f5a82fd04aa9a1106672203dd496" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/8b23f5a82fd04aa9a1106672203dd496"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">原型继承</span></span></h2><h2 id="https://www.notion.so/f9bee63b4531450f82df5e3b5f70724a" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/f9bee63b4531450f82df5e3b5f70724a"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Object.create</span></span></h2><div id="https://www.notion.so/2b88b9f53d3f455ab60da1721cbe4985" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">调用Object.create会创建一个新的对象，并且把新对象内部的[[prototype]]关联到指定的对象</span></span></p></div><div id="https://www.notion.so/f69b958c31b34b5a8fae6ae4d89f7551" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff5845017-4ca0-43b2-a739-0331b1e3d7e3%2FUntitled.jpeg?width=4032&amp;table=block&amp;id=f69b958c-31b3-4b5a-8fae-6ae4d89f7551"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff5845017-4ca0-43b2-a739-0331b1e3d7e3%2FUntitled.jpeg?width=4032&amp;table=block&amp;id=f69b958c-31b3-4b5a-8fae-6ae4d89f7551" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/7776fb9d14e24b58805201ca182894a0" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">这里使用Foo.call方法，是es6前典型的继承方法</span></span></p></div><h3 id="https://www.notion.so/a28a3e4243b249a3a6411ca82254bdf3" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/a28a3e4243b249a3a6411ca82254bdf3"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">polyfill代码</span></span></h3><pre id="https://www.notion.so/8e2cfbdf8cbf460eab43021b75f1d061" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>Object<span class="token punctuation">.</span>create<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	Object<span class="token punctuation">.</span><span class="token function-variable function">create</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">o</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">function</span> <span class="token constant">F</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+		<span class="token class-name">F</span><span class="token punctuation">.</span>prototype <span class="token operator">=</span> o<span class="token punctuation">.</span>prototype
+		<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">F</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span></span></span></span></code></pre><div id="https://www.notion.so/90938f46b7194eae9565b140390b63bc" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">可以通过polyfill代码看到，使用了一次性函数避免操作，并且把函数的prototype关联到了o，这样使用F生成的对象就通过这种方法建成了原型链</span></span></p></div><h3 id="https://www.notion.so/747c9663c9c4458a9655d057bfcf25da" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/747c9663c9c4458a9655d057bfcf25da"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">安全对象</span></span></h3><div id="https://www.notion.so/912020247d72436d94125b8e54fdd778" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">无论如何，普通对象总能通过原型链找到toString()方法 - 因为原型链总会到Object.prototype，那么它上面是什么呢？是null</span></span></p></div><div id="https://www.notion.so/c07977d13ee045bd80d4d38ebc040cd9" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">那么我想要一个避免这种被原型链上游的原型方法影响的对象，可以通过</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">Object.create(null)</code></span><span class="SemanticString">,这样就创建了一个安全的对象，不会收到上有原型链的影响</span></span></p></div><h3 id="https://www.notion.so/e3b9f677390349c590ef8b1e624896b6" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/e3b9f677390349c590ef8b1e624896b6"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">委托的代码风格</span></span></h3><div id="https://www.notion.so/659a5c534b21445a83b5211efa98748a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">通过委托实现继承，避免了含义不明的语法</span></span></p></div><pre id="https://www.notion.so/e73a4723854c429da70e251453cb1e20" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>Foo <span class="token operator">=</span> <span class="token punctuation">{</span>
+		<span class="token function-variable function">init</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">who</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">this</span><span class="token punctuation">.</span>me <span class="token operator">=</span> who<span class="token punctuation">;</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token function-variable function">identify</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> <span class="token string">"I am "</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>me<span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+Bar <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>Foo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Bar<span class="token punctuation">.</span><span class="token function-variable function">speak</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	alert <span class="token string">"Hello, + this.identify() + "</span><span class="token punctuation">.</span>"
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> b1 <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>Bar<span class="token punctuation">)</span><span class="token punctuation">;</span>
+b1<span class="token punctuation">.</span> <span class="token function">init</span><span class="token punctuation">(</span> <span class="token string">"b1"</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> b2 <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>Bar<span class="token punctuation">)</span><span class="token punctuation">;</span></span></span></span></code></pre><div id="https://www.notion.so/abaa6be41ae24f7399a728935d97ed7f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">没有好坏之分，知识可以通过这种风格思考一下如何设计更加好，更加容易理解</span></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Zhao’s Blog 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
