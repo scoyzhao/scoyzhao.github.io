@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>JavaScript模块机制&nbsp;|&nbsp;Zhao’s Blog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="JavaScript模块机制">
+  
+    <meta name="description" content="JavaScript模块总结">
+    <meta property="og:description" content="JavaScript模块总结">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">JavaScript模块机制</h1>
+    
+      <div class="DateTagBar">
+        
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Fri, Mar 10, 2023</span>
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--yellow">
+            <a href="tag/JavaScript.html">JavaScript</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--green">
+            <a href="tag/Front End.html">Front End</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/74d34c6d976844379a78bd2a1a976715" class="PageRoot PageRoot--FullWidth"><ul id="https://www.notion.so/f244b87d1edc47099025c11d00372592" class="ColorfulBlock ColorfulBlock--ColorGray TableOfContents"><li class="TableOfContents__Item"><a href="#https://www.notion.so/a11b5c4aacbb4fddb6d8b150eb2545c7"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">JavaScript模块化机制</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/ee906d87be674b70a5d07e907fb82a19"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">AMD</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/0d3f507f2df34a05975564b08991b824"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">定义模块</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/7d96e1db0568457ca3f97a7d6066a448"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">引入模块</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/d53cd80e546a448987519a83e921bc4b"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">CommonJS</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/de713e6e15444eaca16c88916bba6ae1"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">ESM</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/b3fce704829a41c4b1b5c077942a1bdc"><div style="margin-left:0px"><span class="SemanticStringArray"><span class="SemanticString">现在的开发现状</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/9d8c59a04a1e487db7657b46a3dd8245"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">前端开发</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/d416401b95a440daa0a8db1ab06e9b0a"><div style="margin-left:48px"><span class="SemanticStringArray"><span class="SemanticString">DEMO</span></span></div></a></li><li class="TableOfContents__Item"><a href="#https://www.notion.so/bf138614e6234dcbb3c33a428b3fa61c"><div style="margin-left:24px"><span class="SemanticStringArray"><span class="SemanticString">NodeJS开发</span></span></div></a></li></ul><h1 id="https://www.notion.so/a11b5c4aacbb4fddb6d8b150eb2545c7" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/a11b5c4aacbb4fddb6d8b150eb2545c7"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">JavaScript模块化机制</span></span></h1><h2 id="https://www.notion.so/ee906d87be674b70a5d07e907fb82a19" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/ee906d87be674b70a5d07e907fb82a19"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">AMD</span></span></h2><div id="https://www.notion.so/e45f9850936a470988bc332d1d823245" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">多在浏览器中使用，了解下用的时候再说</span></span></p></div><h3 id="https://www.notion.so/0d3f507f2df34a05975564b08991b824" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/0d3f507f2df34a05975564b08991b824"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">定义模块</span></span></h3><pre id="https://www.notion.so/7de5185ae75b4a32b3b2af5201d385dc" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token function">define</span><span class="token punctuation">(</span>id<span class="token operator">?</span><span class="token operator">:</span> string<span class="token punctuation">,</span>dependencies<span class="token operator">?</span><span class="token operator">:</span> string<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token literal-property property">factory</span><span class="token operator">:</span> Function <span class="token operator">|</span> object<span class="token punctuation">)</span></span></span></span></code></pre><div id="https://www.notion.so/e0f78bbc6b3d42e0a740f8f559ab7779" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">id</code></span><span class="SemanticString">：模块名，若不写则为匿名模块</span></span></p></div><div id="https://www.notion.so/83a3f6742e8744f684a0a510c119759b" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">dependencies</code></span><span class="SemanticString">：一来列表，可选，默认为[”require”, “exports”, “module”]</span></span></p></div><div id="https://www.notion.so/175cac261f004fbb8bb8dcd301e8d8c4" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">factory</code></span><span class="SemanticString">：模块的具体实现</span></span></p></div><h3 id="https://www.notion.so/7d96e1db0568457ca3f97a7d6066a448" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/7d96e1db0568457ca3f97a7d6066a448"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">引入模块</span></span></h3><pre id="https://www.notion.so/09166147e47e49ceafe2ae55914fc69a" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token function">require</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+    <span class="token string">"moduleA"</span><span class="token punctuation">,</span>
+    <span class="token string">"moduleB"</span><span class="token punctuation">,</span>
+    <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">m1<span class="token punctuation">,</span> m2</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 使用m1、m2</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span></span></span></code></pre><h2 id="https://www.notion.so/d53cd80e546a448987519a83e921bc4b" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/d53cd80e546a448987519a83e921bc4b"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">CommonJS</span></span></h2><div id="https://www.notion.so/2d11f8178a664967b8b5558e8efca97c" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">在NodeJS中使用，用require和module.exports引入和导出模块</span></span></p></div><h2 id="https://www.notion.so/de713e6e15444eaca16c88916bba6ae1" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/de713e6e15444eaca16c88916bba6ae1"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">ESM</span></span></h2><div id="https://www.notion.so/44df0b5eefc743169b10e4b24e7205c6" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">JavaScript 从 ES6(ES2015) 开始支持的原生模块机制，使用</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">import</code></span><span class="SemanticString">和</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">export</code></span><span class="SemanticString">引入和导出模块</span></span></p></div><h1 id="https://www.notion.so/b3fce704829a41c4b1b5c077942a1bdc" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/b3fce704829a41c4b1b5c077942a1bdc"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">现在的开发现状</span></span></h1><h2 id="https://www.notion.so/9d8c59a04a1e487db7657b46a3dd8245" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/9d8c59a04a1e487db7657b46a3dd8245"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">前端开发</span></span></h2><div id="https://www.notion.so/4b16d2f53c9044499cbd7dc729d4e055" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">到目前为止，前端开发基于框架，基本上都适用babel等工具转译，可以直接支持ESM</span></span></p></div><h3 id="https://www.notion.so/d416401b95a440daa0a8db1ab06e9b0a" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/d416401b95a440daa0a8db1ab06e9b0a"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">DEMO</span></span></h3><div id="https://www.notion.so/73c20550b05b4fa4bce90d966c9927e2" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">TODO</span></span></p></div><h2 id="https://www.notion.so/bf138614e6234dcbb3c33a428b3fa61c" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/bf138614e6234dcbb3c33a428b3fa61c"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">NodeJS开发</span></span></h2><div id="https://www.notion.so/81cd6633e3e6430c8bd16bf34551864f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">从node v13.2开始就支持esm了，但是不能直接用，需要手动开启：</span></span></p></div><ol class="NumberedListWrapper"><li id="https://www.notion.so/04fc83fd8faa4f7daf3961e00fce4de7" class="NumberedList" value="1"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">在 package.json 中，增加 </strong></span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">type: &quot;module&quot;</strong></code></span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold"> 配置</strong></span></span></li><li id="https://www.notion.so/31bcadafc56a44b4b03d0dc93d92b6ea" class="NumberedList" value="2"><span class="SemanticStringArray"><span class="SemanticString">在</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">.mjs</code></span><span class="SemanticString">文件中，可以直接使用</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">import</code></span><span class="SemanticString">和</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">export</code></span></span></li></ol><div id="https://www.notion.so/9693bbc3bcc540de9938e060a85a3353" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div><div id="https://www.notion.so/688f3f19d9064a00ad5a546450e10bf5" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">根据ESM的规范，使用import关键字并不会想CommonJS模块那样，在默认情况下以文件扩展名填充文件路径。所以</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">ES Modules</code></span><span class="SemanticString">必须明确文件扩展名</span></span></p></div><div id="https://www.notion.so/becc0e47db54463f89bb9f1473d1b749" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Zhao’s Blog 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
